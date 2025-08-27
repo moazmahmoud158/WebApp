@@ -40,7 +40,7 @@ The architecture is designed for resilience and scalability:
   - Public route table routes `0.0.0.0/0` to the IGW.  
   - Private route tables route `0.0.0.0/0` to the NAT in the same AZ.
     
-![Architecture](./2-VPC.png)
+![Architecture](./pivs/2-VPC.png)
 
 ### 2. Security
 - **ALB-SG**: Allows inbound HTTP/HTTPS from the internet.  
