@@ -15,7 +15,6 @@ The setup ensures:
 - **Network isolation** using public and private subnets.  
 - **Monitoring and alerts** via SNS.  
 
----
 
 ## Architecture Diagram
 The architecture is designed for resilience and scalability:  
@@ -30,7 +29,6 @@ The architecture is designed for resilience and scalability:
 
 ![Architecture](./Architect.png)
 
----
 
 ## Steps
 
@@ -67,7 +65,7 @@ The architecture is designed for resilience and scalability:
 - Deployed an **Internet-facing ALB** in the two private subnets.  
 - Assigned ALB-SG.  
 - Listener :80 → Forward traffic to the Target Group.  
-![Architecture](./5-ALB-EC2.png)
+![Architecture](./5-ALB.png)
 ### 6. Auto Scaling Group
 - Created an **ASG** using the launch template.  
 - Selected the two private subnets.  
