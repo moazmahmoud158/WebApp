@@ -27,7 +27,7 @@ The architecture is designed for resilience and scalability:
    - App-SG allows inbound traffic only from ALB-SG.  
 5. **SNS** sends email notifications when thresholds are breached.  
 
-![Architecture](./Architect.png)
+![Architecture](./pics/Architect.png)
 
 
 ## Steps
@@ -46,9 +46,9 @@ The architecture is designed for resilience and scalability:
 - **ALB-SG**: Allows inbound HTTP/HTTPS from the internet.  
 - **App-SG**: Allows inbound HTTP only from ALB-SG.  
 - Outbound rules kept open to allow updates.
-  ![Architecture](./3-sg.png)
+  ![Architecture](./pics/3-sg.png)
 - IAM Role created for EC2 with minimal required permissions (e.g., SSM, CloudWatch).  
-  ![Architecture](./1-IAM-Role.png)
+  ![Architecture](./pics/1-IAM-Role.png)
 ### 3. Launch Template
 - Created an **EC2 Launch Template** with:  
   - Amazon Linux AMI.  
@@ -56,7 +56,7 @@ The architecture is designed for resilience and scalability:
   - Attached IAM Role.  
   - Assigned App-SG.  
   - User Data script to install Apache and deploy a sample app + `/health` endpoint.  
-![Architecture](./4-Template-EC2.png)
+![Architecture](./pics/4-Template-EC2.png)
 ### 4. Target Group
 - Configured an **Instance Target Group** with health checks on `/health`.  
 - Linked to the VPC.  
@@ -65,18 +65,18 @@ The architecture is designed for resilience and scalability:
 - Deployed an **Internet-facing ALB** in the two private subnets.  
 - Assigned ALB-SG.  
 - Listener :80 → Forward traffic to the Target Group.  
-![Architecture](./5-ALB.png)
+![Architecture](./pics/5-ALB.png)
 ### 6. Auto Scaling Group
 - Created an **ASG** using the launch template.  
 - Selected the two private subnets.  
 - Attached to the Target Group.  
 - Set desired capacity = 2, min = 2, max = 4.  
 - Configured scaling policy with CPU target tracking at 50%.  
-![Architecture](./6-ASG.png)
+![Architecture](./pics/6-ASG.png)
 ### 7. Monitoring & Alerts 
 - Configured an **SNS topic** to send notifications by email when alarms are triggered.  
-![Architecture](./7-SNS.png)
-![Architecture](./8-EC2.png)
+![Architecture](./pics/7-SNS.png)
+![Architecture](./pics/8-EC2.png)
 ---
 
 ## Outcome
