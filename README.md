@@ -1,5 +1,10 @@
 # Scalable Web Application on AWS
 
+## Table of Contents
+- [Overview](#overview)
+- [Architecture Diagram](#architecture-diagram)
+- [Steps](#steps)
+
 ## Overview
 This project demonstrates the deployment of a **highly available and scalable web application** on AWS using **EC2 instances**, **Application Load Balancer (ALB)**, and **Auto Scaling Groups (ASG)**.  
 The infrastructure is designed following AWS best practices for security, availability, and cost optimization.  
@@ -23,12 +28,9 @@ The architecture is designed for resilience and scalability:
    - App-SG allows inbound traffic only from ALB-SG.  
 5. **SNS** sends email notifications when thresholds are breached.  
 
-*(You can add your own diagram image here)*  
-```md
-![Architecture Diagram](./architecture.png)
-```
+![Architecture](./Architect.png)
 
----
+```
 
 ## Steps
 
@@ -39,13 +41,14 @@ The architecture is designed for resilience and scalability:
 - Defined route tables:
   - Public route table routes `0.0.0.0/0` to the IGW.  
   - Private route tables route `0.0.0.0/0` to the NAT in the same AZ.  
-
+  ![Architecture](./2-VPC.png)
 ### 2. Security
 - **ALB-SG**: Allows inbound HTTP/HTTPS from the internet.  
 - **App-SG**: Allows inbound HTTP only from ALB-SG.  
-- Outbound rules kept open to allow updates.  
+- Outbound rules kept open to allow updates.
+  ![Architecture](./3-sg.png)
 - IAM Role created for EC2 with minimal required permissions (e.g., SSM, CloudWatch).  
-
+  ![Architecture](./1-IAM-Role.png)
 ### 3. Launch Template
 - Created an **EC2 Launch Template** with:  
   - Amazon Linux AMI.  
@@ -53,7 +56,7 @@ The architecture is designed for resilience and scalability:
   - Attached IAM Role.  
   - Assigned App-SG.  
   - User Data script to install Apache and deploy a sample app + `/health` endpoint.  
-
+![Architecture](./4-Template-EC2.png)
 ### 4. Target Group
 - Configured an **Instance Target Group** with health checks on `/health`.  
 - Linked to the VPC.  
@@ -62,17 +65,18 @@ The architecture is designed for resilience and scalability:
 - Deployed an **Internet-facing ALB** in the two private subnets.  
 - Assigned ALB-SG.  
 - Listener :80 → Forward traffic to the Target Group.  
-
+![Architecture](./5-ALB-EC2.png)
 ### 6. Auto Scaling Group
 - Created an **ASG** using the launch template.  
 - Selected the two private subnets.  
 - Attached to the Target Group.  
 - Set desired capacity = 2, min = 2, max = 4.  
 - Configured scaling policy with CPU target tracking at 50%.  
-
+![Architecture](./6-ASG.png)
 ### 7. Monitoring & Alerts 
 - Configured an **SNS topic** to send notifications by email when alarms are triggered.  
-
+![Architecture](./7-SNS.png)
+![Architecture](./8-EC2.png)
 ---
 
 ## Outcome
