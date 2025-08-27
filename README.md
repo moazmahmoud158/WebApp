@@ -30,7 +30,7 @@ The architecture is designed for resilience and scalability:
 
 ![Architecture](./Architect.png)
 
-```
+---
 
 ## Steps
 
